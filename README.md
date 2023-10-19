@@ -8,7 +8,7 @@ Thank you for considering contributing to the Laravel blog.
 
 ## Security Vulnerabilities
 
-If you discover a security vulnerability within this repository, please send an e-mail to Shaz3e via [laravel-blog@shaz3e.com](mailto:laravel-belo@shaz3e.com). All security vulnerabilities will be promptly addressed.
+If you discover a security vulnerability within this repository, please send an e-mail to Shaz3e via [laravel-blog@shaz3e.com](mailto:laravel-blog@shaz3e.com). All security vulnerabilities will be promptly addressed.
 
 ## License
 
