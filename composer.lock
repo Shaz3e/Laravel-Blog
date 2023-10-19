@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "aa322c53454393ed775cfe4807d54a50",
+    "content-hash": "3d93d679884d4ba6b73dba5474c0b83f",
     "packages": [
         {
             "name": "brick/math",
@@ -3104,6 +3104,70 @@
                 }
             ],
             "time": "2023-04-15T23:01:58+00:00"
+        },
+        {
+            "name": "shaz3e/laravelinstaller",
+            "version": "1.0.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Shaz3e/LaravelInstaller.git",
+                "reference": "f027565e53737133193ac3945e97a6eac15f96f0"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Shaz3e/LaravelInstaller/zipball/f027565e53737133193ac3945e97a6eac15f96f0",
+                "reference": "f027565e53737133193ac3945e97a6eac15f96f0",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.0.0"
+            },
+            "type": "library",
+            "extra": {
+                "laravel": {
+                    "providers": [
+                        "Shaz3e\\LaravelInstaller\\Providers\\LaravelInstallerServiceProvider"
+                    ]
+                }
+            },
+            "autoload": {
+                "files": [
+                    "src/Helpers/functions.php"
+                ],
+                "psr-4": {
+                    "Shaz3e\\LaravelInstaller\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Rachid Laasri",
+                    "email": "rashidlaasri@gmail.com"
+                },
+                {
+                    "name": "Jeremy Kenedy",
+                    "email": "jeremykenedy@gmail.com"
+                }
+            ],
+            "description": "Laravel web installer",
+            "support": {
+                "issues": "https://github.com/Shaz3e/LaravelInstaller/issues",
+                "source": "https://github.com/Shaz3e/LaravelInstaller/tree/1.0.0"
+            },
+            "funding": [
+                {
+                    "url": "https://rachidlaasri.com",
+                    "type": "custom"
+                },
+                {
+                    "url": "https://twitter.com/rashidlaasri",
+                    "type": "custom"
+                }
+            ],
+            "time": "2023-07-29T10:00:29+00:00"
         },
         {
             "name": "symfony/console",

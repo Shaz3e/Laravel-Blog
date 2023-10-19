@@ -159,6 +159,10 @@ return [
         /*
          * Package Service Providers...
          */
+        /**
+         * Laravel Installer
+         */
+        Shaz3e\LaravelInstaller\Providers\LaravelInstallerServiceProvider::class,
 
         /*
          * Application Service Providers...
