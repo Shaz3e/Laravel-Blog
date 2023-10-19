@@ -26,7 +26,7 @@ class RolePermissionSeeder extends Seeder
             ['name' => 'user'], // 5
         ];
 
-        foreach($rolesData as $roleData){
+        foreach ($rolesData as $roleData) {
             Role::create($roleData);
         }
 
@@ -47,7 +47,7 @@ class RolePermissionSeeder extends Seeder
         $user->givePermissionTo(Permission::all());
     }
 
-    Private function createPermissions(): void
+    private function createPermissions(): void
     {
         /**
          * Read Permissions
@@ -56,41 +56,41 @@ class RolePermissionSeeder extends Seeder
             ['name' => 'read post'],
         ];
 
-        foreach ($read_permissions as $permissionData){
+        foreach ($read_permissions as $permissionData) {
             Permission::create($permissionData);
         }
 
-         /**
-          * Create Permissions
-          */
+        /**
+         * Create Permissions
+         */
         $create_permissions = [
             ['name' => 'create post'],
         ];
 
-        foreach ($create_permissions as $permissionData){
+        foreach ($create_permissions as $permissionData) {
             Permission::create($permissionData);
         }
 
-          /**
-           * Update Permissions
-           */
+        /**
+         * Update Permissions
+         */
         $update_permissions = [
             ['name' => 'update post'],
         ];
 
-        foreach ($update_permissions as $permissionData){
+        foreach ($update_permissions as $permissionData) {
             Permission::create($permissionData);
         }
 
-           /**
-            * Delete Permissions
-            */
-            $delete_permissions = [
-                ['name' => 'delete post'],
-            ];
+        /**
+         * Delete Permissions
+         */
+        $delete_permissions = [
+            ['name' => 'delete post'],
+        ];
 
-            foreach ($delete_permissions as $permissionData){
-                Permission::create($permissionData);
-            }
+        foreach ($delete_permissions as $permissionData) {
+            Permission::create($permissionData);
+        }
     }
 }
