@@ -5,12 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Status extends Model
+class Media extends Model
 {
     use HasFactory;
 
-    protected $fillable = [
+    protected $filalble = [
+        'media_categories_id',
         'name',
-        'is_active',
     ];
 }
