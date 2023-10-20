@@ -104,7 +104,7 @@ class PermissionController extends Controller
             ));
         } else {
             Session::flash('error', [
-                'text' => 'Catgory could not be found.'
+                'text' => 'Permission could not be found.'
             ]);
             return redirect($this->route);
         }
