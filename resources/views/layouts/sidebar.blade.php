@@ -198,33 +198,6 @@
                         </li>
                       </ul>
                   </li>
-                  {{-- Keywords --}}
-                  <li
-                      class="nav-item {{ request()->is('dashboard/keywords') || request()->is('dashboard/keywords/*') ? 'menu-open' : '' }}">
-                      <a href="#" class="nav-link">
-                          <i class="nav-icon fas fa-tachometer-alt"></i>
-                          <p>
-                              Keywords
-                              <i class="right fas fa-angle-left"></i>
-                          </p>
-                      </a>
-                      <ul class="nav nav-treeview">
-                        <li class="nav-item">
-                            <a href="{{ route('keywords.create') }}"
-                                class="nav-link {{ request()->is('dashboard/keywords/create') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>Create New</p>
-                            </a>
-                        </li>
-                        <li class="nav-item">
-                            <a href="{{ route('keywords.index') }}"
-                                class="nav-link {{ request()->is('dashboard/keywords') ? 'active' : '' }}">
-                                <i class="far fa-circle nav-icon"></i>
-                                <p>View All</p>
-                            </a>
-                        </li>
-                      </ul>
-                  </li>
                   {{-- Post Status --}}
                   <li
                       class="nav-item {{ request()->is('dashboard/post-statuses') || request()->is('dashboard/post-statuses/*') ? 'menu-open' : '' }}">
