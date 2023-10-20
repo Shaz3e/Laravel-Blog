@@ -41,6 +41,7 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::resource('post-statuses', PostStatusController::class);
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
+    Route::post('roles/{id}/permissions', [RoleController::class, 'updatePermissions'])->name('roles.update.permissions');
     Route::resource('permissions', PermissionController::class);
 });
 
