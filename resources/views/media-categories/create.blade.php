@@ -4,7 +4,6 @@
 @endsection
 
 @section('content')
-
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
@@ -12,12 +11,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Create Post</h1>
+                        <h1>Create New Media Category</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('posts.index') }}">View All</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('media-categories.index') }}">View All</a></li>
                             <li class="breadcrumb-item active">Create</li>
                         </ol>
                     </div>
@@ -29,36 +28,73 @@
         <section class="content">
 
             <!-- Default box -->
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Title</h3>
-
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                            <i class="fas fa-times"></i>
-                        </button>
+            <form action="{{ route('media-categories.store') }}" method="POST" id="submitForm">
+                @csrf
+                <div class="card">
+                    <div class="card-header">
+                        <h3 class="card-title">Ceate New Media Category</h3>
                     </div>
+                    <div class="card-body">
+                        <div class="row">
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label for="name">Media Category Name</label>
+                                    <input type="text" name="name" value="{{ old('name') }}" class="form-control"
+                                        required maxlength="255" id="name">
+                                </div>
+                            </div>
+                            <div class="col-lg-6 col-md-6 col-sm-12">
+                                <div class="form-group">
+                                    <label for="name">Status</label>
+                                    <select class="form-control" name="is_active">
+                                        <option value="1">Active</option>
+                                        <option value="0">Inactive</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        {{-- /.row --}}
+                    </div>
+                    <!-- /.card-body -->
+                    <div class="card-footer">
+                        <button type="submit" class="btn btn-success">Create</button>
+                    </div>
+                    <!-- /.card-footer-->
                 </div>
-                <div class="card-body">
-                    Start creating your amazing application!
-                </div>
-                <!-- /.card-body -->
-                <div class="card-footer">
-                    Footer
-                </div>
-                <!-- /.card-footer-->
-            </div>
-            <!-- /.card -->
+                <!-- /.card -->
+            </form>
 
         </section>
         <!-- /.content -->
     </div>
     <!-- /.content-wrapper -->
-
 @endsection
 
 @section('scripts')
+    <script src="{{ asset('plugins/jquery-validation/jquery.validate.min.js') }}"></script>
+    <script src="{{ asset('plugins/jquery-validation/additional-methods.min.js') }}"></script>
+    <script>
+        $('#submitForm').validate({
+            errorElement: 'span',
+            errorPlacement: function(error, element) {
+                error.addClass('invalid-feedback');
+                element.closest('.form-group').append(error);
+            },
+            highlight: function(element, errorClass, validClass) {
+                $(element).addClass('is-invalid');
+            },
+            unhighlight: function(element, errorClass, validClass) {
+                $(element).removeClass('is-invalid');
+            }
+        });
+        // Auto generate slug depanding on category name
+        const textInput = document.getElementById('name');
+        const outputInput = document.getElementById('slug');
+
+        textInput.addEventListener('input', function() {
+            const inputValue = this.value.trim().toLowerCase(); // Remove trailing spaces and make lowercase
+            const modifiedValue = inputValue.replace(/\s+/g, '-'); // Replace spaces with hyphens
+            outputInput.value = modifiedValue;
+        });
+    </script>
 @endsection
