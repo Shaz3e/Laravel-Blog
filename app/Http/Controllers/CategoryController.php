@@ -97,7 +97,7 @@ class CategoryController extends Controller
         $data = Category::find($id);
 
         if ($data) {
-            return view($this->view . '/' . $id . 'edit');
+            return redirect($this->route . '/' . $id . '/edit');
         } else {
             Session::flash('error', [
                 'text' => 'Category could not be found.'

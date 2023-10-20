@@ -84,7 +84,7 @@ class TagController extends Controller
         $data = Tag::find($id);
 
         if ($data) {
-            return view($this->view . '/' . $id . 'edit');
+            return redirect($this->route . '/' . $id . '/edit');
         } else {
             Session::flash('error', [
                 'text' => 'Tag could not be found.'

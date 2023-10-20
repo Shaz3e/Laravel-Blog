@@ -80,7 +80,7 @@ class PostStatusController extends Controller
         $data = PostStatus::find($id);
 
         if ($data) {
-            return view($this->view . '/' . $id . 'edit');
+            return redirect($this->route . '/' . $id . '/edit');
         } else {
             Session::flash('error', [
                 'text' => 'Post status could not be found.'

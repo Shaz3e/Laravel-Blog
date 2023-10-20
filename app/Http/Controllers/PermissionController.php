@@ -82,7 +82,7 @@ class PermissionController extends Controller
         $data = Permission::find($id);
 
         if ($data) {
-            return view($this->view . '/' . $id . 'edit');
+            return redirect($this->route . '/' . $id . '/edit');
         } else {
             Session::flash('error', [
                 'text' => 'Permission could not be found.'

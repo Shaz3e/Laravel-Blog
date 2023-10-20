@@ -80,7 +80,7 @@ class RoleController extends Controller
         $data = Role::find($id);
 
         if ($data) {
-            return view($this->view . 'edit', compact('data'));
+            return redirect($this->route . '/' . $id . '/edit');
         } else {
             Session::flash('error', [
                 'text' => 'Role could not be found.'

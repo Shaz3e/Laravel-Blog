@@ -79,7 +79,7 @@ class MediaCategoryController extends Controller
         $data = MediaCategory::find($id);
 
         if ($data) {
-            return view($this->view . '/' . $id . 'edit');
+            return redirect($this->route . '/' . $id . '/edit');
         } else {
             Session::flash('error', [
                 'text' => 'Media Category could not be found.'
