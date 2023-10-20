@@ -44,10 +44,10 @@
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-12">
                                 <div class="form-group">
-                                    <label for="name">Status Name</label>
+                                    <label for="name">Status</label>
                                     <select class="form-control" name="is_active">
-                                        <option value="0">Inactive</option>
                                         <option value="1">Active</option>
+                                        <option value="0">Inactive</option>
                                     </select>
                                 </div>
                             </div>
@@ -56,7 +56,7 @@
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-success">Create New Status</button>
+                        <button type="submit" class="btn btn-success">Create</button>
                     </div>
                     <!-- /.card-footer-->
                 </div>

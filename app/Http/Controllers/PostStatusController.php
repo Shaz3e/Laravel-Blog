@@ -94,7 +94,6 @@ class PostStatusController extends Controller
      */
     public function edit(string $id)
     {
-
         $data = PostStatus::find($id);
 
         if ($data) {
