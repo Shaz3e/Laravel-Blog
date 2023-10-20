@@ -16,6 +16,7 @@ class CategorySeeder extends Seeder
         DB::table('categories')->delete();
         $categoreis = [
             'category_type_id' => 1,
+            'parent_category_id' => 1,
             'name' => 'Default',
             'slug' => 'default',
         ];

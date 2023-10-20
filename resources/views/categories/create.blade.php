@@ -50,6 +50,17 @@
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-12">
                                 <div class="form-group">
+                                    <label for="name">Parent Category Name</label>
+                                    <select name="parent_category_id" class="form-control">
+                                        <option value="">Parent</option>
+                                        @foreach($categories as $category)
+                                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-12">
+                                <div class="form-group">
                                     <label for="name">Category Name</label>
                                     <input type="text" name="name" value="{{ old('name') }}" class="form-control"
                                         required maxlength="255" id="name">

@@ -35,7 +35,8 @@ class CategoryController extends Controller
     public function create()
     {
         $categoryTypes = CategoryType::where('is_active', 1)->get();
-        return view($this->view . 'create', compact('categoryTypes'));
+        $categories = Category::all();
+        return view($this->view . 'create', compact('categoryTypes', 'categories'));
     }
 
     /**
@@ -73,9 +74,11 @@ class CategoryController extends Controller
 
         $data = new Category();
         $data->category_type_id = $request->category_type_id;
+        $data->parent_category_id = $request->parent_category_id;
         $data->name = $request->name;
         $data->slug = $request->slug;
         $data->is_active = $request->is_active;
+
         $result = $data->save();
 
         if ($result) {

@@ -38,7 +38,8 @@
                             <tr>
                                 <th>#</th>
                                 <th>Category Type</th>
-                                <th>Name</th>
+                                <th>Parent Category Name</th>
+                                <th>Category Name</th>
                                 <th>Slug</th>
                                 <th>Status</th>
                                 <th>Actions</th>
@@ -49,6 +50,11 @@
                                 <tr>
                                     <td>{{ $data->id }}</td>
                                     <td>{{ $data->type }}</td>
+                                    <td>
+                                        @if ($data->parent_category_id != null)
+                                            {{ getCategoryNameById($data->parent_category_id) }}
+                                        @endif
+                                    </td>
                                     <td>{{ $data->name }}</td>
                                     <td>{{ $data->slug }}</td>
                                     <td>
