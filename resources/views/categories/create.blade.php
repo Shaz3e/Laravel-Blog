@@ -11,7 +11,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Create Post Status</h1>
+                        <h1>Create Category</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -32,22 +32,42 @@
                 @csrf
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Ceate New Status</h3>
+                        <h3 class="card-title">Ceate New Category</h3>
                     </div>
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="col-lg-3 col-md-3 col-sm-12">
                                 <div class="form-group">
-                                    <label for="name">Status Name</label>
-                                    <input type="text" name="name" value="{{ old('name') }}" class="form-control" required maxlength="255">
+                                    <label for="category_type_id">Category Type</label>
+                                    <select name="category_type_id" class="form-control" required>
+                                        <option value="">Select</option>
+                                        @foreach ($categoryTypes as $type)
+                                            <option value="{{ $type->id }}" {{ old('category_type_id', $type->id) }}>
+                                                {{ $type->name }}</option>
+                                        @endforeach
+                                    </select>
                                 </div>
                             </div>
-                            <div class="col-lg-6 col-md-6 col-sm-12">
+                            <div class="col-lg-3 col-md-3 col-sm-12">
                                 <div class="form-group">
-                                    <label for="name">Status Name</label>
+                                    <label for="name">Category Name</label>
+                                    <input type="text" name="name" value="{{ old('name') }}" class="form-control"
+                                        required maxlength="255" id="name">
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-12">
+                                <div class="form-group">
+                                    <label for="slug">Category Slug</label>
+                                    <input type="text" name="slug" value="{{ old('slug') }}" class="form-control"
+                                        required maxlength="255" id="slug">
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-12">
+                                <div class="form-group">
+                                    <label for="name">Status</label>
                                     <select class="form-control" name="is_active">
-                                        <option value="0">Inactive</option>
                                         <option value="1">Active</option>
+                                        <option value="0">Inactive</option>
                                     </select>
                                 </div>
                             </div>
@@ -56,7 +76,7 @@
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-success">Create New Status</button>
+                        <button type="submit" class="btn btn-success">Create</button>
                     </div>
                     <!-- /.card-footer-->
                 </div>
@@ -85,6 +105,15 @@
             unhighlight: function(element, errorClass, validClass) {
                 $(element).removeClass('is-invalid');
             }
+        });
+        // Auto generate slug depanding on category name
+        const textInput = document.getElementById('name');
+        const outputInput = document.getElementById('slug');
+
+        textInput.addEventListener('input', function() {
+            const inputValue = this.value.trim().toLowerCase(); // Remove trailing spaces and make lowercase
+            const modifiedValue = inputValue.replace(/\s+/g, '-'); // Replace spaces with hyphens
+            outputInput.value = modifiedValue;
         });
     </script>
 @endsection

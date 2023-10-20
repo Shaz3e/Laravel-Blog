@@ -15,7 +15,7 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>View All Post Statuses</h1>
+                        <h1>View All Categories</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
@@ -32,24 +32,14 @@
 
             <!-- Default box -->
             <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Title</h3>
-
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-tool" data-card-widget="collapse" title="Collapse">
-                            <i class="fas fa-minus"></i>
-                        </button>
-                        <button type="button" class="btn btn-tool" data-card-widget="remove" title="Remove">
-                            <i class="fas fa-times"></i>
-                        </button>
-                    </div>
-                </div>
                 <div class="card-body">
                     <table id="dataList" class="table">
                         <thead>
                             <tr>
                                 <th>#</th>
+                                <th>Category Type</th>
                                 <th>Name</th>
+                                <th>Slug</th>
                                 <th>Status</th>
                                 <th>Actions</th>
                             </tr>
@@ -58,7 +48,9 @@
                             @foreach ($dataSet as $data)
                                 <tr>
                                     <td>{{ $data->id }}</td>
+                                    <td>{{ $data->type }}</td>
                                     <td>{{ $data->name }}</td>
+                                    <td>{{ $data->slug }}</td>
                                     <td>
                                         @if ($data->is_active == 1)
                                             <span class="badge badge-success">Active</span>
@@ -67,18 +59,22 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <a class="btn btn-flat btn-success" href="{{ route('post-statuses.edit', $data->id) }}">
+                                        <a class="btn btn-flat btn-success"
+                                            href="{{ route('categories.edit', $data->id) }}">
                                             <i class="fa-regular fa-pen-to-square"></i>
                                         </a>
-                                    
-                                        <form action="{{ route('post-statuses.destroy', $data->id) }}" method="POST" style="display: inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-flat btn-danger" onclick="DeleteFormSubmit(this)">
-                                                <i class="fa-solid fa-trash-can"></i>
-                                            </button>
-                                        </form>
-                                    </td>                                    
+                                        @if ($data->id != 1)
+                                            <form action="{{ route('categories.destroy', $data->id) }}" method="POST"
+                                                style="display: inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-flat btn-danger"
+                                                    onclick="DeleteFormSubmit(this)">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </button>
+                                            </form>
+                                        @endif
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -126,7 +122,7 @@
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#dataList_wrapper .col-md-6:eq(0)');
         });
-        
+
         function DeleteFormSubmit(element) {
             $(element).attr("type", "submit");
             $(element).click();
