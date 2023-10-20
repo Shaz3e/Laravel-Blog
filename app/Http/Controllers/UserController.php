@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\MediaCategory;
 use Illuminate\Http\Request;
 
-class MediaCategoryController extends Controller
+class UserController extends Controller
 {
     // View
-    protected $view = 'media-categories.';
+    protected $view = 'users.';
 
     // Route
-    protected $route = 'dashboard/media-categories';
+    protected $route = 'dashboard/users';
+    
     /**
      * Display a listing of the resource.
      */

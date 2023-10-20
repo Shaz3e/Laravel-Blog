@@ -7,12 +7,18 @@ use Illuminate\Http\Request;
 
 class CategoryTypeController extends Controller
 {
+    // View
+    protected $view = 'category-types.';
+
+    // Route
+    protected $route = 'dashboard/category-types';
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        $dataSet = CategoryType::all();
+        return view($this->view. 'index', compact('dataSet'));
     }
 
     /**
@@ -20,7 +26,7 @@ class CategoryTypeController extends Controller
      */
     public function create()
     {
-        //
+        return view($this->view. 'create');
     }
 
     /**
@@ -34,7 +40,7 @@ class CategoryTypeController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(CategoryType $categoryType)
+    public function show(string $id)
     {
         //
     }
@@ -42,7 +48,7 @@ class CategoryTypeController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(CategoryType $categoryType)
+    public function edit(string $id)
     {
         //
     }
@@ -50,7 +56,7 @@ class CategoryTypeController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, CategoryType $categoryType)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -58,7 +64,7 @@ class CategoryTypeController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(CategoryType $categoryType)
+    public function destroy(string $id)
     {
         //
     }

@@ -2,17 +2,22 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Status;
 use Illuminate\Http\Request;
 
-class StatusController extends Controller
+class RoleController extends Controller
 {
+    // View
+    protected $view = 'roles.';
+
+    // Route
+    protected $route = 'dashboard/roles';
+    
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return view($this->view. 'index');
     }
 
     /**
@@ -20,7 +25,7 @@ class StatusController extends Controller
      */
     public function create()
     {
-        //
+        return view($this->view. 'create');
     }
 
     /**
@@ -34,7 +39,7 @@ class StatusController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Status $status)
+    public function show(string $id)
     {
         //
     }
@@ -42,7 +47,7 @@ class StatusController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Status $status)
+    public function edit(string $id)
     {
         //
     }
@@ -50,7 +55,7 @@ class StatusController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Status $status)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -58,7 +63,7 @@ class StatusController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Status $status)
+    public function destroy(string $id)
     {
         //
     }

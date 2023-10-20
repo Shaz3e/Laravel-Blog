@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('posts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('status_id')->constrained();
+            $table->foreignId('post_status_id')->constrained();
             $table->string('category_id');
             $table->string('tag_id');
             $table->string('title');

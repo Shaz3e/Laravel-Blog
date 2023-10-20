@@ -7,12 +7,17 @@ use Illuminate\Http\Request;
 
 class KeywordController extends Controller
 {
+    // View
+    protected $view = 'keywords.';
+
+    // Route
+    protected $route = 'dashboard/keywords';
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return view($this->view. 'index');
     }
 
     /**
@@ -20,7 +25,7 @@ class KeywordController extends Controller
      */
     public function create()
     {
-        //
+        return view($this->view. 'create');
     }
 
     /**
@@ -34,7 +39,7 @@ class KeywordController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Keyword $keyword)
+    public function show(string $id)
     {
         //
     }
@@ -42,7 +47,7 @@ class KeywordController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Keyword $keyword)
+    public function edit(string $id)
     {
         //
     }
@@ -50,7 +55,7 @@ class KeywordController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Keyword $keyword)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -58,7 +63,7 @@ class KeywordController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Keyword $keyword)
+    public function destroy(string $id)
     {
         //
     }

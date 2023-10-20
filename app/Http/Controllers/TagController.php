@@ -7,12 +7,18 @@ use Illuminate\Http\Request;
 
 class TagController extends Controller
 {
+    // View
+    protected $view = 'tags.';
+
+    // Route
+    protected $route = 'dashboard/tags';
+    
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        //
+        return view($this->view. 'index');
     }
 
     /**
@@ -20,7 +26,7 @@ class TagController extends Controller
      */
     public function create()
     {
-        //
+        return view($this->view. 'create');
     }
 
     /**
@@ -34,7 +40,7 @@ class TagController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Tag $tag)
+    public function show(string $id)
     {
         //
     }
@@ -42,7 +48,7 @@ class TagController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Tag $tag)
+    public function edit(string $id)
     {
         //
     }
@@ -50,7 +56,7 @@ class TagController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Tag $tag)
+    public function update(Request $request, string $id)
     {
         //
     }
@@ -58,7 +64,7 @@ class TagController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Tag $tag)
+    public function destroy(string $id)
     {
         //
     }

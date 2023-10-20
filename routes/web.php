@@ -1,6 +1,16 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\CategoryTypeController;
+use App\Http\Controllers\KeywordController;
+use App\Http\Controllers\MediaCategoryController;
+use App\Http\Controllers\MediaController;
+use App\Http\Controllers\PermissionController;
+use App\Http\Controllers\PostController;
+use App\Http\Controllers\PostStatusController;
+use App\Http\Controllers\RoleController;
+use App\Http\Controllers\TagController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -22,10 +32,18 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+Route::middleware('auth')->prefix('dashboard')->group(function () {
+    Route::resource('posts', PostController::class);
+    Route::resource('category-types', CategoryTypeController::class);
+    Route::resource('categories', CategoryController::class);
+    Route::resource('tags', TagController::class);
+    Route::resource('media-categories', MediaCategoryController::class);
+    Route::resource('media', MediaController::class);
+    Route::resource('keywords', KeywordController::class);
+    Route::resource('post-statuses', PostStatusController::class);
+    Route::resource('users', UserController::class);
+    Route::resource('roles', RoleController::class);
+    Route::resource('permissions', PermissionController::class);
 });
 
 require __DIR__.'/auth.php';

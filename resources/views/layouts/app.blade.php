@@ -13,6 +13,7 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="{{ asset('plugins/fontawesome-free/css/all.min.css') }}">
     @yield('styles')
+    <link rel="stylesheet" href="{{ asset('plugins/toastr/toastr.min.css') }}">
     <!-- Theme style -->
     <link rel="stylesheet" href="{{ asset('dist/css/adminlte.min.css') }}">
 </head>
@@ -196,8 +197,43 @@
     <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
+    <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
+    <script>
+        toaster.options = {
+            closeButton: true,
+            positionClass: 'toast-top-right',
+            newestOnTop: true,
+            timeOut: 5000, // Adjust the timeout as needed
+            progressBar: true,
+        };
+    </script>
+    @if (Session::has('message'))
+        <script>
+            toastr.success("{{ session('message')['text'] }}");
+        </script>
+    @endif
+    @if (Session::has('error'))
+        <script>
+            toastr.error("{{ session('error')['text'] }}");
+        </script>
+    @endif
+    @if (Session::has('license_error'))
+        <script>
+            toastr.error("{!! session('license_error')['text'] !!}");
+        </script>
+    @endif
+    @if (Session::has('info'))
+        <script>
+            toastr.info("{{ session('info')['text'] }}");
+        </script>
+    @endif
+    @if (Session::has('warning'))
+        <script>
+            toastr.warning("{{ session('warning')['text'] }}");
+        </script>
+    @endif
     @yield('scripts')
-    <script src="{{ asset('dist/js/demo.js') }}"></script>
+    {{-- <script src="{{ asset('dist/js/demo.js') }}"></script> --}}
 </body>
 
 </html>
