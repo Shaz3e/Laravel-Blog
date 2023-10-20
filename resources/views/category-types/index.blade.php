@@ -55,18 +55,22 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <a class="btn btn-flat btn-success" href="{{ route('category-types.edit', $data->id) }}">
+                                        <a class="btn btn-flat btn-success"
+                                            href="{{ route('category-types.edit', $data->id) }}">
                                             <i class="fa-regular fa-pen-to-square"></i>
                                         </a>
-                                    
-                                        <form action="{{ route('category-types.destroy', $data->id) }}" method="POST" style="display: inline;">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="btn btn-flat btn-danger" onclick="DeleteFormSubmit(this)">
-                                                <i class="fa-solid fa-trash-can"></i>
-                                            </button>
-                                        </form>
-                                    </td>                                    
+                                        @if ($data->id != 1)
+                                            <form action="{{ route('category-types.destroy', $data->id) }}" method="POST"
+                                                style="display: inline;">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="submit" class="btn btn-flat btn-danger"
+                                                    onclick="DeleteFormSubmit(this)">
+                                                    <i class="fa-solid fa-trash-can"></i>
+                                                </button>
+                                            </form>
+                                        @endif
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -114,7 +118,7 @@
                 "buttons": ["copy", "csv", "excel", "pdf", "print", "colvis"]
             }).buttons().container().appendTo('#dataList_wrapper .col-md-6:eq(0)');
         });
-        
+
         function DeleteFormSubmit(element) {
             $(element).attr("type", "submit");
             $(element).click();
