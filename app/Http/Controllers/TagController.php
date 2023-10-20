@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\Tag;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class TagController extends Controller
 {
@@ -12,13 +14,13 @@ class TagController extends Controller
 
     // Route
     protected $route = 'dashboard/tags';
-    
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view($this->view. 'index');
+        $dataSet = Tag::all();
+        return view($this->view . 'index', compact('dataSet'));
     }
 
     /**
@@ -26,7 +28,7 @@ class TagController extends Controller
      */
     public function create()
     {
-        return view($this->view. 'create');
+        return view($this->view . 'create');
     }
 
     /**
@@ -34,7 +36,44 @@ class TagController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required|max:255|unique:tags,name',
+                'slug' => 'required|max:255|unique:tags,slug',
+                'is_active' => 'required|boolean',
+            ],
+            [
+                'name.required' => 'Tag is required.',
+                'name.max' => 'Tag must not be greater than 255 characters.',
+                'name.unique' => 'Tag already exists.',
+                'slug.required' => 'Tag slug is required.',
+                'slug.max' => 'Tag slug must not be greater than 255 characters.',
+                'slug.unique' => 'Tag slug already exists.',
+                'is_active.required' => 'Tag is required.',
+                'is_active.boolean' => 'Tag is invalid.',
+            ],
+        );
+
+        if ($validator->fails()) {
+            Session::flash('error', [
+                'text' => $validator->errors()->first(),
+            ]);
+            return redirect()->back()->withInput();
+        }
+
+        $data = new Tag();
+        $data->name = $request->name;
+        $data->slug = $request->slug;
+        $data->is_active = $request->is_active;
+        $result = $data->save();
+
+        if ($result) {
+            Session::flash('message', [
+                'text' => 'Tag has been created.'
+            ]);
+            return redirect($this->route);
+        }
     }
 
     /**
@@ -42,7 +81,16 @@ class TagController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $data = Tag::find($id);
+
+        if ($data) {
+            return view($this->view . '/' . $id . 'edit');
+        } else {
+            Session::flash('error', [
+                'text' => 'Tag could not be found.'
+            ]);
+            return redirect($this->route);
+        }
     }
 
     /**
@@ -50,7 +98,16 @@ class TagController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data = Tag::find($id);
+
+        if ($data) {
+            return view($this->view . 'edit', compact('data'));
+        } else {
+            Session::flash('error', [
+                'text' => 'Tag could not be found.'
+            ]);
+            return redirect($this->route);
+        }
     }
 
     /**
@@ -58,7 +115,50 @@ class TagController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required|max:255|unique:tags,name,' . $id,
+                'slug' => 'required|max:255|unique:tags,slug,' . $id,
+                'is_active' => 'required|boolean',
+            ],
+            [
+                'name.required' => 'Tag name is required.',
+                'name.max' => 'Tag must not be greater than 255 characters.',
+                'name.unique' => 'Tag already exists.',
+                'slug.required' => 'Tag slug is required.',
+                'slug.max' => 'Tag slug must not be greater than 255 characters.',
+                'slug.unique' => 'Tag slug already exists.',
+                'is_active.required' => 'Tag is required.',
+                'is_active.boolean' => 'Tag is invalid.',
+            ],
+        );
+
+        if($validator->fails()){
+            Session::flash('error', [
+                'text' => $validator->errors()->first(),
+            ]);
+            return redirect()->back()->withInput();
+        }
+
+        $data = Tag::find($id);
+        $data->name = $request->name;
+        $data->slug = $request->slug;
+        $data->is_active = $request->is_active;
+
+        $result = $data->save();
+
+        if($result){
+            Session::flash('message', [
+                'text' => 'Tag has been updated.'
+            ]);
+            return redirect($this->route);
+        }else{
+            Session::flash('error', [
+                'text' => 'Tag could not be updated.'
+            ]);
+            return redirect()->back();
+        }
     }
 
     /**
@@ -66,6 +166,24 @@ class TagController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        if (Tag::where('id', $id)->exists()) {
+            $result = Tag::destroy($id);
+            if ($result) {
+                Session::flash('message', [
+                    'text' => 'Tag has been deleted.'
+                ]);
+                return redirect($this->route);
+            } else {
+                Session::flash('error', [
+                    'text' => 'Tag could not be deleted.'
+                ]);
+                return redirect()->back();
+            }
+        } else {
+            Session::flash('error', [
+                'text' => 'Tag could not be found.'
+            ]);
+            return redirect()->back();
+        }
     }
 }
