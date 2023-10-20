@@ -2,7 +2,6 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CategoryTypeController;
-use App\Http\Controllers\KeywordController;
 use App\Http\Controllers\MediaCategoryController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\PermissionController;
@@ -39,7 +38,6 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::resource('tags', TagController::class);
     Route::resource('media-categories', MediaCategoryController::class);
     Route::resource('media', MediaController::class);
-    Route::resource('keywords', KeywordController::class);
     Route::resource('post-statuses', PostStatusController::class);
     Route::resource('users', UserController::class);
     Route::resource('roles', RoleController::class);
