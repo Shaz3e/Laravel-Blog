@@ -11,12 +11,12 @@
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6">
-                        <h1>Create Post Status</h1>
+                        <h1>Create Category Type</h1>
                     </div>
                     <div class="col-sm-6">
                         <ol class="breadcrumb float-sm-right">
                             <li class="breadcrumb-item"><a href="{{ route('dashboard') }}">Home</a></li>
-                            <li class="breadcrumb-item"><a href="{{ route('categories.index') }}">View All</a></li>
+                            <li class="breadcrumb-item"><a href="{{ route('category-types.index') }}">View All</a></li>
                             <li class="breadcrumb-item active">Create</li>
                         </ol>
                     </div>
@@ -28,26 +28,26 @@
         <section class="content">
 
             <!-- Default box -->
-            <form action="{{ route('categories.store') }}" method="POST" id="submitForm">
+            <form action="{{ route('category-types.store') }}" method="POST" id="submitForm">
                 @csrf
                 <div class="card">
                     <div class="card-header">
-                        <h3 class="card-title">Ceate New Status</h3>
+                        <h3 class="card-title">Ceate New Type</h3>
                     </div>
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-6 col-md-6 col-sm-12">
                                 <div class="form-group">
-                                    <label for="name">Status Name</label>
+                                    <label for="name">Type Name</label>
                                     <input type="text" name="name" value="{{ old('name') }}" class="form-control" required maxlength="255">
                                 </div>
                             </div>
                             <div class="col-lg-6 col-md-6 col-sm-12">
                                 <div class="form-group">
-                                    <label for="name">Status Name</label>
+                                    <label for="name">Status</label>
                                     <select class="form-control" name="is_active">
-                                        <option value="0">Inactive</option>
                                         <option value="1">Active</option>
+                                        <option value="0">Inactive</option>
                                     </select>
                                 </div>
                             </div>
@@ -56,7 +56,7 @@
                     </div>
                     <!-- /.card-body -->
                     <div class="card-footer">
-                        <button type="submit" class="btn btn-success">Create New Status</button>
+                        <button type="submit" class="btn btn-success">Create</button>
                     </div>
                     <!-- /.card-footer-->
                 </div>

@@ -55,11 +55,11 @@
                                         @endif
                                     </td>
                                     <td>
-                                        <a class="btn btn-flat btn-success" href="{{ route('post-statuses.edit', $data->id) }}">
+                                        <a class="btn btn-flat btn-success" href="{{ route('category-types.edit', $data->id) }}">
                                             <i class="fa-regular fa-pen-to-square"></i>
                                         </a>
                                     
-                                        <form action="{{ route('post-statuses.destroy', $data->id) }}" method="POST" style="display: inline;">
+                                        <form action="{{ route('category-types.destroy', $data->id) }}" method="POST" style="display: inline;">
                                             @csrf
                                             @method('DELETE')
                                             <button type="submit" class="btn btn-flat btn-danger" onclick="DeleteFormSubmit(this)">

@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Models\CategoryType;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
 
 class CategoryTypeController extends Controller
 {
@@ -18,7 +20,7 @@ class CategoryTypeController extends Controller
     public function index()
     {
         $dataSet = CategoryType::all();
-        return view($this->view. 'index', compact('dataSet'));
+        return view($this->view . 'index', compact('dataSet'));
     }
 
     /**
@@ -26,7 +28,7 @@ class CategoryTypeController extends Controller
      */
     public function create()
     {
-        return view($this->view. 'create');
+        return view($this->view . 'create');
     }
 
     /**
@@ -34,7 +36,45 @@ class CategoryTypeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required|max:255|unique:category_types,name',
+                'is_active' => 'required|boolean',
+            ],
+            [
+                'name.required' => 'Category type name is required',
+                'name.max' => 'Category type namemust not exceed 255 characters',
+                'name.unique' => 'Category type name must be unique',
+                'is_active.required' => 'Category type status is required',
+                'is_active.boolean' => 'Category type status is invalid',
+            ],
+        );
+
+        if ($validator->fails()) {
+            Session::flash('error', [
+                'message' => $validator->errors()->first(),
+            ]);
+            return redirect()->back()->withInput();
+        }
+
+        $data = new CategoryType();
+        $data->name = $request->name;
+        $data->is_active = $request->is_active;
+
+        $result = $data->save();
+
+        if ($result) {
+            Session::flash('mesage', [
+                'text' => 'Category type created successfully',
+            ]);
+            return redirect($this->route);
+        } else {
+            Session::flash('error', [
+                'text' => 'Category type creation failed',
+            ]);
+            return redirect()->back()->withInput();
+        }
     }
 
     /**
@@ -42,7 +82,16 @@ class CategoryTypeController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $data = CategoryType::find($id);
+
+        if ($data) {
+            return view($this->view . '/' . $id . 'edit');
+        } else {
+            Session::flash('error', [
+                'text' => 'Category Type could not be found.'
+            ]);
+            return redirect($this->route);
+        }
     }
 
     /**
@@ -50,7 +99,16 @@ class CategoryTypeController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data = CategoryType::find($id);
+
+        if ($data) {
+            return view($this->view . 'edit', compact('data'));
+        } else {
+            Session::flash('error', [
+                'text' => 'Category Type could not be found.'
+            ]);
+            return redirect($this->route);
+        }
     }
 
     /**
@@ -58,7 +116,45 @@ class CategoryTypeController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required|max:255|unique:post_statuses,name,' . $id,
+                'is_active' => 'required|boolean',
+            ],
+            [
+                'name.required' => 'Post Status name is required.',
+                'name.max' => 'Post Status must not be greater than 255 characters.',
+                'name.unique' => 'Post Status already exists.',
+                'is_active.required' => 'Post Status is required.',
+                'is_active.boolean' => 'Post Status is invalid.',
+            ],
+        );
+
+        if($validator->fails()){
+            Session::flash('error', [
+                'text' => $validator->errors()->first(),
+            ]);
+            return redirect()->back()->withInput();
+        }
+
+        $data = CategoryType::find($id);
+        $data->name = $request->name;
+        $data->is_active = $request->is_active;
+
+        $result = $data->save();
+
+        if($result){
+            Session::flash('message', [
+                'text' => 'Category Type has been updated.'
+            ]);
+            return redirect($this->route);
+        }else{
+            Session::flash('error', [
+                'text' => 'Category Type could not be updated.'
+            ]);
+            return redirect()->back();
+        }
     }
 
     /**
@@ -66,6 +162,24 @@ class CategoryTypeController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        if (CategoryType::where('id', $id)->exists()) {
+            $result = CategoryType::destroy($id);
+            if ($result) {
+                Session::flash('message', [
+                    'text' => 'Category Type has been deleted.'
+                ]);
+                return redirect($this->route);
+            } else {
+                Session::flash('error', [
+                    'text' => 'Category Type could not be deleted.'
+                ]);
+                return redirect()->back();
+            }
+        } else {
+            Session::flash('error', [
+                'text' => 'Category Type could not be found.'
+            ]);
+            return redirect()->back();
+        }
     }
 }
