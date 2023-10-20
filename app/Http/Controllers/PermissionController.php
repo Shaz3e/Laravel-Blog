@@ -3,6 +3,9 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\Validator;
+use Spatie\Permission\Models\Permission;
 
 class PermissionController extends Controller
 {
@@ -11,13 +14,14 @@ class PermissionController extends Controller
 
     // Route
     protected $route = 'dashboard/permissions';
-    
+
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        return view($this->view. 'index');
+        $permissions = Permission::all();
+        return view($this->view . 'index', compact('permissions'));
     }
 
     /**
@@ -25,7 +29,7 @@ class PermissionController extends Controller
      */
     public function create()
     {
-        return view($this->view. 'create');
+        return view($this->view . 'create');
     }
 
     /**
@@ -33,7 +37,41 @@ class PermissionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required|max:255|unique:permissions,name',
+            ],
+            [
+                'name.required' => 'Permission Name is required',
+                'name.unique' => 'Permission Name already exists',
+                'name.max' => 'Permission Name must be less than 255 characters',
+            ],
+        );
+
+        if ($validator->fails()) {
+            Session::flash('error', [
+                'text' => $validator->errors()->first(),
+            ]);
+            return redirect()->back()->withInput();
+        }
+
+        $data = new Permission();
+        $data->name = $request->name;
+
+        $result = $data->save();
+
+        if ($result) {
+            Session::flash('success', [
+                'text' => 'Permission created successfully',
+            ]);
+            return redirect($this->route);
+        } else {
+            Session::flash('error', [
+                'text' => 'Permission creation failed',
+            ]);
+            return redirect()->back()->withInput();
+        }
     }
 
     /**
@@ -41,7 +79,16 @@ class PermissionController extends Controller
      */
     public function show(string $id)
     {
-        //
+        $data = Permission::find($id);
+
+        if ($data) {
+            return view($this->view . '/' . $id . 'edit');
+        } else {
+            Session::flash('error', [
+                'text' => 'Permission could not be found.'
+            ]);
+            return redirect($this->route);
+        }
     }
 
     /**
@@ -49,7 +96,18 @@ class PermissionController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        $data = Permission::find($id);
+
+        if ($data) {
+            return view($this->view . 'edit', compact(
+                'data',
+            ));
+        } else {
+            Session::flash('error', [
+                'text' => 'Catgory could not be found.'
+            ]);
+            return redirect($this->route);
+        }
     }
 
     /**
@@ -57,7 +115,42 @@ class PermissionController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        
+        $validator = Validator::make(
+            $request->all(),
+            [
+                'name' => 'required|max:255|unique:permissions,name',
+            ],
+            [
+                'name.required' => 'Permission Name is required',
+                'name.unique' => 'Permission Name already exists',
+                'name.max' => 'Permission Name must be less than 255 characters',
+            ],
+        );
+
+        if ($validator->fails()) {
+            Session::flash('error', [
+                'text' => $validator->errors()->first(),
+            ]);
+            return redirect()->back()->withInput();
+        }
+
+        $data = Permission::find($id);
+        $data->name = $request->name;
+
+        $result = $data->save();
+
+        if ($result) {
+            Session::flash('success', [
+                'text' => 'Permission created successfully',
+            ]);
+            return redirect($this->route);
+        } else {
+            Session::flash('error', [
+                'text' => 'Permission creation failed',
+            ]);
+            return redirect()->back()->withInput();
+        }
     }
 
     /**
@@ -65,6 +158,25 @@ class PermissionController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+
+        if (Permission::where('id', $id)->exists()) {
+            $result = Permission::destroy($id);
+            if ($result) {
+                Session::flash('message', [
+                    'text' => 'Permission has been deleted.'
+                ]);
+                return redirect($this->route);
+            } else {
+                Session::flash('error', [
+                    'text' => 'Permission could not be deleted.'
+                ]);
+                return redirect()->back();
+            }
+        } else {
+            Session::flash('error', [
+                'text' => 'Permission could not be found.'
+            ]);
+            return redirect()->back();
+        }
     }
 }
