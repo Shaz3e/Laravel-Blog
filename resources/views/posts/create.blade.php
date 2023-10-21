@@ -77,9 +77,9 @@
                                     </div>
                                     <div class="col-lg-12 col-md-12 col-sm-12">
                                         <div class="form-group">
-                                            <input type="text" id="summary" name="summary" placeholder="Summary"
-                                                class="form-control" value="{{ old('summary') }}" maxlength="255"
-                                                required />
+                                            <textarea id="summary" name="summary" placeholder="Summary"
+                                                class="form-control" maxlength="255"
+                                                required>{{ old('summary') }}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -113,9 +113,8 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="meta_description">Meta Description</label>
-                                            <input type="text" name="meta_description" class="form-control"
-                                                id="meta_description" placeholder="Meta Description"
-                                                value="{{ old('meta_description') }}" maxlength="255" required />
+                                            <textarea name="meta_description" class="form-control"
+                                                id="meta_description" placeholder="Meta Description" maxlength="255" required>{{ old('meta_description') }}</textarea>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
