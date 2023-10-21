@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Validator;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class PermissionController extends Controller
 {
@@ -29,7 +30,8 @@ class PermissionController extends Controller
      */
     public function create()
     {
-        return view($this->view . 'create');
+        $roles = Role::all();
+        return view($this->view . 'create', compact('roles'));
     }
 
     /**
@@ -41,11 +43,13 @@ class PermissionController extends Controller
             $request->all(),
             [
                 'name' => 'required|max:255|unique:permissions,name',
+                'role_ids' => 'required|array',
             ],
             [
                 'name.required' => 'Permission Name is required',
                 'name.unique' => 'Permission Name already exists',
                 'name.max' => 'Permission Name must be less than 255 characters',
+                'role_ids.*' => 'Select at least one role',
             ],
         );
 
@@ -56,22 +60,22 @@ class PermissionController extends Controller
             return redirect()->back()->withInput();
         }
 
-        $data = new Permission();
-        $data->name = $request->name;
+        $permission = Permission::create(['guard_name' => 'web', 'name' => $request->name]);
+        $roleIds = $request->role_ids;
 
-        $result = $data->save();
+        foreach ($roleIds as $roleId) {
+            $role = Role::find($roleId);
 
-        if ($result) {
-            Session::flash('success', [
-                'text' => 'Permission created successfully',
-            ]);
-            return redirect($this->route);
-        } else {
-            Session::flash('error', [
-                'text' => 'Permission creation failed',
-            ]);
-            return redirect()->back()->withInput();
+            // Assign the permission to the selected role
+            if ($role) {
+                $role->givePermissionTo($permission);
+            }
         }
+
+        Session::flash('success', [
+            'text' => 'Permission created successfully',
+        ]);
+        return redirect($this->route);
     }
 
     /**
@@ -96,10 +100,12 @@ class PermissionController extends Controller
      */
     public function edit(string $id)
     {
+        $roles = Role::all();
         $data = Permission::find($id);
 
         if ($data) {
             return view($this->view . 'edit', compact(
+                'roles',
                 'data',
             ));
         } else {
@@ -115,11 +121,11 @@ class PermissionController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        
+
         $validator = Validator::make(
             $request->all(),
             [
-                'name' => 'required|max:255|unique:permissions,name',
+                'name' => 'required|max:255|unique:permissions,name,' . $id,
             ],
             [
                 'name.required' => 'Permission Name is required',
@@ -135,22 +141,21 @@ class PermissionController extends Controller
             return redirect()->back()->withInput();
         }
 
-        $data = Permission::find($id);
-        $data->name = $request->name;
+        $permission = Permission::find($id);
+        $permission->name = $request->name;
+        $permission->save();
 
-        $result = $data->save();
+        // Detach all existing roles
+        $permission->roles()->detach();
 
-        if ($result) {
-            Session::flash('success', [
-                'text' => 'Permission created successfully',
-            ]);
-            return redirect($this->route);
-        } else {
-            Session::flash('error', [
-                'text' => 'Permission creation failed',
-            ]);
-            return redirect()->back()->withInput();
-        }
+        // Attach the updated roles
+        $roleIds = $request->role_ids;
+        $permission->syncRoles($roleIds);
+
+        Session::flash('success', [
+            'text' => 'Permission updated successfully',
+        ]);
+        return redirect($this->route);
     }
 
     /**
