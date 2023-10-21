@@ -15,9 +15,9 @@ return new class extends Migration
             $table->id();
             $table->foreignId('post_status_id')->constrained();
             $table->string('category_id');
-            $table->string('tag_id');
+            $table->string('tag_id')->nullable();
             $table->string('title');
-            $table->string('url_slug');
+            $table->string('slug');
             $table->string('summary')->nullable();
             $table->longText('description');
             $table->text('featured_image')->nullable();
@@ -28,7 +28,7 @@ return new class extends Migration
             $table->dateTime('published_at')->nullable();
             $table->string('created_by')->nullable();
             $table->string('updated_by')->nullable();
-            $table->bigInteger('views');
+            $table->bigInteger('views')->nullable();
             $table->boolean('is_comment')->default(1);
             $table->timestamps();
         });
