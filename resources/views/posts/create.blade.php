@@ -77,9 +77,7 @@
                                     </div>
                                     <div class="col-lg-12 col-md-12 col-sm-12">
                                         <div class="form-group">
-                                            <textarea id="summary" name="summary" placeholder="Summary"
-                                                class="form-control" maxlength="255"
-                                                required>{{ old('summary') }}</textarea>
+                                            <textarea id="summary" name="summary" placeholder="Summary" class="form-control" maxlength="255" required>{{ old('summary') }}</textarea>
                                         </div>
                                     </div>
                                 </div>
@@ -113,8 +111,8 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="meta_description">Meta Description</label>
-                                            <textarea name="meta_description" class="form-control"
-                                                id="meta_description" placeholder="Meta Description" maxlength="255" required>{{ old('meta_description') }}</textarea>
+                                            <textarea name="meta_description" class="form-control" id="meta_description" placeholder="Meta Description"
+                                                maxlength="255" required>{{ old('meta_description') }}</textarea>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
@@ -154,7 +152,8 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="post_status_id">Select Status</label>
-                                            <select name="post_status_id" id="post_status_id" class="form-control" required>
+                                            <select name="post_status_id" id="post_status_id" class="form-control"
+                                                required>
                                                 @foreach ($postStatuses as $status)
                                                     <option value="{{ $status->id }}">{{ $status->name }}</option>
                                                 @endforeach
@@ -164,7 +163,8 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="category_id">Select Category</label>
-                                            <select name="category_id[]" id="category_id" multiple class="form-control" required>
+                                            <select name="category_id[]" id="category_id" multiple class="form-control"
+                                                required>
                                                 @foreach ($categories as $category)
                                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
                                                 @endforeach
@@ -192,7 +192,7 @@
                                         <div class="form-group">
                                             <div class="icheck-success d-inline">
                                                 <input type="checkbox" name="is_featured" id="is_featured"
-                                                value="1" {{ old('is_featured') == 1 ? 'checked' : '' }}>
+                                                    value="1" {{ old('is_featured') == 1 ? 'checked' : '' }}>
                                                 <label for="is_featured">
                                                     Featured Post?
                                                 </label>
@@ -203,7 +203,7 @@
                                         <div class="form-group">
                                             <div class="icheck-success d-inline">
                                                 <input type="checkbox" checked name="is_comment" id="is_comment"
-                                                value="1" {{ old('is_comment') == 1 ? 'checked' : '' }}>
+                                                    value="1" {{ old('is_comment') == 1 ? 'checked' : '' }}>
                                                 <label for="is_comment">
                                                     Enable Comments?
                                                 </label>
@@ -240,7 +240,7 @@
     <script>
         $(function() {
             // Initialize Select2 Elements
-            
+
             $('#category_id').select2({
                 theme: 'bootstrap4'
             });
