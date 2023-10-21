@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('styles')
+    <link rel="stylesheet" href="{{ asset('plugins/ekko-lightbox/ekko-lightbox.css') }}">
 @endsection
 
 @section('content')
@@ -50,6 +51,8 @@
                                 <tr>
                                     <th>Post Title</th>
                                     <th>Categories</th>
+                                    <th>Status</th>
+                                    <th>Image</th>
                                     <th>Is Featured</th>
                                     <th>Comments</th>
                                     <th>Action</th>
@@ -64,6 +67,20 @@
                                                 <span
                                                     class="badge badge-primary">{{ getCategoryNameById($category) }}</span>
                                             @endforeach
+                                        </td>
+                                        <td>{{ getPostStatusNameById($post->post_status_id) }}</td>
+                                        <td>
+                                            @if ($post->featured_image != null)
+                                                <a href="{{ asset('images/' . $post->featured_image) }}"
+                                                    data-toggle="lightbox">
+                                                    <img class="img-fluid"
+                                                        src="{{ asset('images/' . $post->featured_image) }}"
+                                                        class="w-auto rounded" loading="lazy" decoding="async"
+                                                        style="height:25px;" />
+                                                </a>
+                                            @else
+                                                <span class="badge badge-danger">No Image</span>
+                                            @endif
                                         </td>
                                         <td>
                                             @if ($post->is_featured == 1)
@@ -111,4 +128,24 @@
 @endsection
 
 @section('scripts')
+    <script src="{{ asset('plugins/ekko-lightbox/ekko-lightbox.min.js') }}"></script>
+    <script>
+        $(function() {
+            // lightbox
+            $(document).on('click', '[data-toggle="lightbox"]', function(event) {
+                event.preventDefault();
+                $(this).ekkoLightbox({
+                    alwaysShowClose: true
+                });
+            });
+        });
+        $(document).ready(function() {
+            // Delete record on click and submit form
+            $(".deleteRecord").click(function(e) {
+                e.preventDefault();
+                let id = $(this).data('id');
+                $('.deleteRecordForm-' + id).submit();
+            });
+        });
+    </script>
 @endsection

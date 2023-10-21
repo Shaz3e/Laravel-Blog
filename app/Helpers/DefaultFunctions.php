@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Category;
+use App\Models\PostStatus;
 use Spatie\Permission\Models\Role;
 
 /**
@@ -19,4 +20,13 @@ function getRoleNameById($id)
 {
     $data = Role::find($id);
     return ucwords($data->name);
+}
+
+/**
+ * Get Post Status Name by Id
+ */
+function getPostStatusNameById($id)
+{
+    $data = PostStatus::find($id);
+    return $data->name;
 }
