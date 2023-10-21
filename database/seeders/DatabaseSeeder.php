@@ -20,6 +20,8 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
+            PostStatusSeeder::class,
+            MediaCategorySeeder::class,
             RolePermissionSeeder::class,
             AdminSeeder::class,
             CategoryTypeSeeder::class,
