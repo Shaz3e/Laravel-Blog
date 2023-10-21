@@ -225,8 +225,7 @@ class PostController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, string $id)
-    {
-        {
+    { {
             $validator = Validator::make(
                 $request->all(),
                 [
@@ -264,17 +263,17 @@ class PostController extends Controller
                     'tag_ids.*.exists' => 'One or more tag does not exists.',
                 ],
             );
-    
+
             if ($validator->fails()) {
                 Session::flash('error', [
                     'text' => $validator->errors()->first(),
                 ]);
                 return back()->withInput();
             }
-    
-    
+
+
             $userId = Auth::user()->id;
-    
+
             $data = Post::find($id);
             $data->post_status_id = $request->post_status_id;
             $data->title = $request->title;
@@ -287,19 +286,19 @@ class PostController extends Controller
             $data->published_at = now();
             $data->created_by = $userId;
             $data->updated_by = $userId;
-    
+
             if (!empty($request->is_featured)) {
                 $data->is_featured = 1;
             } else {
                 $data->is_featured = 0;
             }
-    
+
             if (!empty($request->is_comment)) {
                 $data->is_comment = 1;
             } else {
                 $data->is_comment = 0;
             }
-    
+
             // Modify the category_id handling to convert it to a string
             if ($request->has('category_id') && is_array($request->category_id)) {
                 $categoryString = implode(',', $request->category_id);
@@ -307,7 +306,7 @@ class PostController extends Controller
             } else {
                 $data->category_id = null; // Set it to null if no tags are selected
             }
-    
+
             // Modify the tag_id handling to convert it to a string
             if ($request->has('tag_id') && is_array($request->tag_id)) {
                 $tagsString = implode(',', $request->tag_id);
@@ -315,10 +314,14 @@ class PostController extends Controller
             } else {
                 $data->tag_id = null; // Set it to null if no tags are selected
             }
-    
+
             // Handle the featured image upload
-            $imageName = null; // Initialize imageName to null
-    
+            if ($data->featured_image != null) {
+                $imageName = $data->featured_image;
+            } else {
+                $imageName = null; // Initialize imageName to null
+            }
+
             if ($request->hasFile('featured_image')) {
                 $uploadedFile = $request->file('featured_image');
                 // Make sure a file was successfully uploaded
@@ -333,10 +336,10 @@ class PostController extends Controller
                 }
             }
             $data->featured_image = $imageName;
-    
+
             // return $data;
             $result = $data->save();
-    
+
             if ($result) {
                 Session::flash('message', [
                     'text' => 'Post is updated',
