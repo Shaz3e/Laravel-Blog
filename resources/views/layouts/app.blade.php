@@ -197,16 +197,18 @@
     <script src="{{ asset('plugins/bootstrap/js/bootstrap.bundle.min.js') }}"></script>
     <!-- AdminLTE App -->
     <script src="{{ asset('dist/js/adminlte.min.js') }}"></script>
-    <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
-    <script>
-        toaster.options = {
-            closeButton: true,
-            positionClass: 'toast-top-right',
-            newestOnTop: true,
-            timeOut: 5000, // Adjust the timeout as needed
-            progressBar: true,
-        };
-    </script>
+    @if (Session::has('message') || Session::has('error') || Session::has('info') || Session::has('warning'))
+        <script src="{{ asset('plugins/toastr/toastr.min.js') }}"></script>
+        <script>
+            toaster.options = {
+                closeButton: true,
+                positionClass: 'toast-top-right',
+                newestOnTop: true,
+                timeOut: 5000, // Adjust the timeout as needed
+                progressBar: true,
+            };
+        </script>
+    @endif
     @if (Session::has('message'))
         <script>
             toastr.success("{{ session('message')['text'] }}");
@@ -215,11 +217,6 @@
     @if (Session::has('error'))
         <script>
             toastr.error("{{ session('error')['text'] }}");
-        </script>
-    @endif
-    @if (Session::has('license_error'))
-        <script>
-            toastr.error("{!! session('license_error')['text'] !!}");
         </script>
     @endif
     @if (Session::has('info'))
