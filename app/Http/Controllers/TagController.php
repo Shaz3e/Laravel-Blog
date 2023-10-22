@@ -134,7 +134,7 @@ class TagController extends Controller
             ],
         );
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             Session::flash('error', [
                 'text' => $validator->errors()->first(),
             ]);
@@ -148,12 +148,12 @@ class TagController extends Controller
 
         $result = $data->save();
 
-        if($result){
+        if ($result) {
             Session::flash('message', [
                 'text' => 'Tag has been updated.'
             ]);
             return redirect($this->route);
-        }else{
+        } else {
             Session::flash('error', [
                 'text' => 'Tag could not be updated.'
             ]);
@@ -185,5 +185,46 @@ class TagController extends Controller
             ]);
             return redirect()->back();
         }
+    }
+
+    public function createRecord(Request $request)
+    {
+        // Get the input value from the request
+        $inputValue = $request->input('inputValue');
+
+        // Split the input value by commas
+        $values = explode(',', $inputValue);
+
+        foreach ($values as $value) {
+            // Remove leading/trailing spaces and convert to lowercase
+            $trimmedValue = strtolower(trim($value));
+
+            // Check if a tag with the same name exists
+            $existingTag = Tag::where('name', $trimmedValue)->first();
+
+            if (!$existingTag) {
+                // Create and save a new record in the database
+                $record = new Tag();
+                $record->name = $trimmedValue;
+                $record->slug = $this->generateSlug($trimmedValue, '-'); // Generate the slug
+                $record->save();
+            }
+        }
+
+        return response()->json(['message' => 'Records created successfully']);
+    }
+
+    private function generateSlug($text)
+    {
+        // Replace spaces and special characters with hyphens
+        $slug = preg_replace('/[^\p{L}\p{N}]+/u', '-', $text);
+
+        // Remove leading/trailing hyphens
+        $slug = trim($slug, '-');
+
+        // Convert to lowercase
+        $slug = mb_strtolower($slug, 'UTF-8');
+
+        return $slug;
     }
 }

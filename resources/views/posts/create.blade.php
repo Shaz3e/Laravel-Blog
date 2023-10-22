@@ -174,6 +174,8 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="tag_id">Select Tags</label>
+                                            <input type="text" name="inputValue" class="form-control" id="inputValue"
+                                                placeholder="Value1, Value2, Value3">
                                             <select name="tag_id[]" id="tag_id" class="form-control" multiple>
                                                 @foreach ($tags as $tag)
                                                     <option value="{{ $tag->id }}">{{ $tag->name }}</option>
@@ -294,6 +296,39 @@
             const postTitleValue = this.value.trim().toLowerCase();
             const postSlugValue = postTitleValue.replace(/[^a-z0-9]+/g, '-');
             postSlug.value = postSlugValue;
+        });
+
+        $('#inputValue').on('input', function() {
+            // Detect when a comma is entered
+            if (this.value.endsWith(',')) {
+                // Remove the trailing comma
+                var inputValue = this.value.slice(0, -1);
+
+                // Make an AJAX request to create a record
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                $.ajax({
+                    url: '{{ route('create.tag.ajax') }}',
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    data: {
+                        inputValue: inputValue
+                    },
+                    success: function(response) {
+                        // Handle the success response
+                        // alert(response.message); // You can replace this with your desired action
+                        
+                    },
+                    error: function(xhr) {
+                        // Handle any errors if necessary
+                        console.log(xhr);
+                    }
+                });
+
+                // Clear the input field
+                this.value = '';
+            }
         });
     </script>
 @endsection
