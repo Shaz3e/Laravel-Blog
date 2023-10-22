@@ -43,7 +43,8 @@
                                     <select name="category_type_id" class="form-control" required>
                                         <option value="">Select</option>
                                         @foreach ($categoryTypes as $type)
-                                            <option value="{{ $type->id }}" {{ $type->id == old('category_type_id', $data->category_type_id) ? 'selected' : ''}}>
+                                            <option value="{{ $type->id }}"
+                                                {{ $type->id == old('category_type_id', $data->category_type_id) ? 'selected' : '' }}>
                                                 {{ $type->name }}</option>
                                         @endforeach
                                     </select>
@@ -51,7 +52,21 @@
                             </div>
                             <div class="col-lg-3 col-md-3 col-sm-12">
                                 <div class="form-group">
-                                    <label for="name">Type Name</label>
+                                    <label for="name">Parent Category Name</label>
+                                    <select name="parent_category_id" class="form-control">
+                                        <option value="">Parent</option>
+                                        @foreach ($categories as $category)
+                                            <option value="{{ $category->id }}"
+                                                {{ $category->id == old('parent_category_id', $data->parent_category_id) ? 'selected' : '' }}>
+                                                {{ $category->name }}
+                                            </option>
+                                        @endforeach
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-lg-3 col-md-3 col-sm-12">
+                                <div class="form-group">
+                                    <label for="name">Category Name</label>
                                     <input type="text" name="name" value="{{ old('name', $data->name) }}"
                                         class="form-control" required maxlength="255" id="name">
                                 </div>
@@ -67,7 +82,8 @@
                                 <div class="form-group">
                                     <label for="is_active">Status</label>
                                     <select class="form-control" name="is_active">
-                                        <option value="1" {{ $data->is_active == 1 ? 'selected' : '' }}>Active</option>
+                                        <option value="1" {{ $data->is_active == 1 ? 'selected' : '' }}>Active
+                                        </option>
                                         <option value="0" {{ $data->is_active == 0 ? 'selected' : '' }}>Inactive
                                         </option>
                                     </select>
