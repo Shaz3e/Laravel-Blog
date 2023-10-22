@@ -190,10 +190,12 @@ class TagController extends Controller
     public function createRecord(Request $request)
     {
         // Get the input value from the request
-        $inputValue = $request->input('inputValue');
+        $inputTag = $request->input('inputTag');
 
         // Split the input value by commas
-        $values = explode(',', $inputValue);
+        $values = explode(',', $inputTag);
+
+        $createdTagIds = [];
 
         foreach ($values as $value) {
             // Remove leading/trailing spaces and convert to lowercase
@@ -208,10 +210,17 @@ class TagController extends Controller
                 $record->name = $trimmedValue;
                 $record->slug = $this->generateSlug($trimmedValue, '-'); // Generate the slug
                 $record->save();
+
+                $createdTagIds[] = $record->id;
+            } else {
+                $createdTagIds[] = $existingTag->id;
             }
         }
 
-        return response()->json(['message' => 'Records created successfully']);
+        // Retrieve the tags created or found by IDs
+        $createdTags = Tag::whereIn('id', $createdTagIds)->get();
+
+        return response()->json(['message' => 'Records created successfully', 'tags' => $createdTags]);
     }
 
     private function generateSlug($text)

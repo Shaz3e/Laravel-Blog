@@ -173,6 +173,8 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="category_id">Select Category</label>
+                                            <input type="text" name="inputCategory" class="form-control"
+                                                id="inputCategory" placeholder="category,">
                                             <select name="category_id[]" id="category_id" multiple class="form-control"
                                                 required>
                                                 @foreach ($categories as $category)
@@ -187,6 +189,8 @@
                                     <div class="col-md-12">
                                         <div class="form-group">
                                             <label for="tag_id">Select Tags</label>
+                                            <input type="text" name="inputTag" class="form-control" id="inputTag"
+                                                placeholder="tag,">
                                             <select name="tag_id[]" id="tag_id" class="form-control" multiple>
                                                 @foreach ($tags as $tag)
                                                     <option value="{{ $tag->id }}"
@@ -327,6 +331,88 @@
             const postTitleValue = this.value.trim().toLowerCase();
             const postSlugValue = postTitleValue.replace(/[^a-z0-9]+/g, '-');
             postSlug.value = postSlugValue;
+        });
+
+        // Add Category in DB and update in select box
+        $('#inputCategory').on('input', function() {
+            // Detect when a comma is entered
+            if (this.value.endsWith(',')) {
+                // Remove the trailing comma
+                var inputCategory = this.value.slice(0, -1);
+
+                // Make an AJAX request to create a category
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                $.ajax({
+                    url: '{{ route('create.category.ajax') }}',
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    data: {
+                        inputCategory: inputCategory
+                    },
+                    success: function(response) {
+                        // Handle the success response
+                        // alert(response.message); // You can replace this with your desired action
+
+                        // Update the select box options with the newly created categories
+                        var $categorySelect = $('#category_id');
+                        var categories = response.categories;
+                        categories.forEach(function(category) {
+                            var option = new Option(category.name, category.id, true, true);
+                            $categorySelect.append(option).trigger('change');
+                        });
+                    },
+                    error: function(xhr) {
+                        // Handle any errors if necessary
+                        console.log(xhr);
+                    }
+                });
+
+                // Clear the input field
+                this.value = '';
+            }
+        });
+
+        // Add Tag in DB and update in selecbox
+        $('#inputTag').on('input', function() {
+            // Detect when a comma is entered
+            if (this.value.endsWith(',')) {
+                // Remove the trailing comma
+                var inputTag = this.value.slice(0, -1);
+
+                // Make an AJAX request to create a record
+                var csrfToken = $('meta[name="csrf-token"]').attr('content');
+                $.ajax({
+                    url: '{{ route('create.tag.ajax') }}',
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': csrfToken
+                    },
+                    data: {
+                        inputTag: inputTag
+                    },
+                    success: function(response) {
+                        // Handle the success response
+                        // alert(response.message); // You can replace this with your desired action
+
+                        // Update the select box options with the newly created tags
+                        var $tagSelect = $('#tag_id');
+                        var tags = response.tags;
+                        tags.forEach(function(tag) {
+                            var option = new Option(tag.name, tag.id, true, true);
+                            $tagSelect.append(option).trigger('change');
+                        });
+                    },
+                    error: function(xhr) {
+                        // Handle any errors if necessary
+                        console.log(xhr);
+                    }
+                });
+
+                // Clear the input field
+                this.value = '';
+            }
         });
     </script>
 @endsection

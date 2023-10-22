@@ -24,8 +24,8 @@ class CategoryController extends Controller
             'categories.*',
             'category_types.name as type'
         )
-        ->leftJoin('category_types', 'category_types.id', 'categories.category_type_id')
-        ->get();
+            ->leftJoin('category_types', 'category_types.id', 'categories.category_type_id')
+            ->get();
         return view($this->view . 'index', compact('dataSet'));
     }
 
@@ -112,10 +112,15 @@ class CategoryController extends Controller
     public function edit(string $id)
     {
         $categoryTypes = CategoryType::where('is_active', 1)->get();
+        $categories = Category::all();
         $data = Category::find($id);
 
         if ($data) {
-            return view($this->view . 'edit', compact('data', 'categoryTypes'));
+            return view($this->view . 'edit', compact(
+                'categoryTypes',
+                'categories',
+                'data'
+            ));
         } else {
             Session::flash('error', [
                 'text' => 'Catgory could not be found.'
@@ -150,7 +155,7 @@ class CategoryController extends Controller
             ],
         );
 
-        if($validator->fails()){
+        if ($validator->fails()) {
             Session::flash('error', [
                 'text' => $validator->errors()->first(),
             ]);
@@ -159,18 +164,19 @@ class CategoryController extends Controller
 
         $data = Category::find($id);
         $data->category_type_id = $request->category_type_id;
+        $data->parent_category_id = $request->parent_category_id;
         $data->name = $request->name;
         $data->slug = $request->slug;
         $data->is_active = $request->is_active;
 
         $result = $data->save();
 
-        if($result){
+        if ($result) {
             Session::flash('message', [
                 'text' => 'Category has been updated.'
             ]);
             return redirect($this->route);
-        }else{
+        } else {
             Session::flash('error', [
                 'text' => 'Category could not be updated.'
             ]);
@@ -202,5 +208,56 @@ class CategoryController extends Controller
             ]);
             return redirect()->back();
         }
+    }
+
+    public function createRecord(Request $request)
+    {
+        // Get the input value from the request
+        $inputCategory = $request->input('inputCategory');
+
+        // Split the input value by commas
+        $values = explode(',', $inputCategory);
+
+        $createdCategoryIds = [];
+
+        foreach ($values as $value) {
+            // Remove leading/trailing spaces and convert to lowercase
+            $trimmedValue = strtolower(trim($value));
+
+            // Check if a category with the same name exists
+            $existingCategory = Category::where('name', $trimmedValue)->first();
+
+            if (!$existingCategory) {
+                // Create and save a new record in the database
+                $record = new Category();
+                $record->category_type_id = 1;
+                $record->name = $trimmedValue;
+                $record->slug = $this->generateSlug($trimmedValue, '-'); // Generate the slug
+                $record->save();
+
+                $createdCategoryIds[] = $record->id;
+            } else {
+                $createdCategoryIds[] = $existingCategory->id;
+            }
+        }
+
+        // Retrieve the categories created or found by IDs
+        $createdCategories = Category::whereIn('id', $createdCategoryIds)->get();
+
+        return response()->json(['message' => 'Records created successfully', 'categories' => $createdCategories]);
+    }
+
+    private function generateSlug($text)
+    {
+        // Replace spaces and special characters with hyphens
+        $slug = preg_replace('/[^\p{L}\p{N}]+/u', '-', $text);
+
+        // Remove leading/trailing hyphens
+        $slug = trim($slug, '-');
+
+        // Convert to lowercase
+        $slug = mb_strtolower($slug, 'UTF-8');
+
+        return $slug;
     }
 }

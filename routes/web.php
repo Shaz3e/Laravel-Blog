@@ -34,9 +34,13 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::resource('posts', PostController::class);
     Route::resource('category-types', CategoryTypeController::class);
+    
+    Route::post('create-category', [CategoryController::class, 'createRecord'])->name('create.category.ajax');
     Route::resource('categories', CategoryController::class);
+
     Route::post('create-tag', [TagController::class, 'createRecord'])->name('create.tag.ajax');
     Route::resource('tags', TagController::class);
+
     Route::resource('media-categories', MediaCategoryController::class);
     Route::resource('media', MediaController::class);
     Route::resource('post-statuses', PostStatusController::class);
