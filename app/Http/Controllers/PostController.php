@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Category;
+use App\Models\Comment;
 use App\Models\Media;
 use App\Models\Post;
 use App\Models\PostStatus;
@@ -33,7 +34,7 @@ class PostController extends Controller
             $query->where('title', 'like', '%' . $search . '%');
         }
 
-        $posts = $query->orderBy('created_at', 'desc')->paginate(10);
+        $posts = $query->orderBy('created_at', 'desc')->paginate(1);
 
         return view($this->view . 'index', compact('posts', 'search'));
     }
@@ -362,6 +363,7 @@ class PostController extends Controller
         // Delete post
         $post = Post::find($id);
         if ($post) {
+            Comment::where('post_id', $id)->delete();
             $post->delete();
             Session::flash('message', [
                 'text' => 'Post is deleted',

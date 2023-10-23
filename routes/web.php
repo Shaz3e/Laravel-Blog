@@ -2,11 +2,13 @@
 
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CategoryTypeController;
+use App\Http\Controllers\CommentController;
 use App\Http\Controllers\MediaCategoryController;
 use App\Http\Controllers\MediaController;
 use App\Http\Controllers\PermissionController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\PostStatusController;
+use App\Http\Controllers\PostViewController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TagController;
 use App\Http\Controllers\UserController;
@@ -23,9 +25,10 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::get('/', [PostViewController::class, 'list']);
+Route::get('/{id}-{slug}', [PostViewController::class, 'post']);
+
+Route::post('/user-comment', [CommentController::class, 'createComment'])->name('user.comment.store');
 
 Route::get('/dashboard', function () {
     return view('dashboard');
@@ -48,6 +51,8 @@ Route::middleware('auth')->prefix('dashboard')->group(function () {
     Route::resource('roles', RoleController::class);
     Route::post('roles/{id}/permissions', [RoleController::class, 'updatePermissions'])->name('roles.update.permissions');
     Route::resource('permissions', PermissionController::class);
+
+    Route::resource('comments', CommentController::class);
 });
 
 require __DIR__.'/auth.php';

@@ -3,6 +3,7 @@
 use App\Models\Category;
 use App\Models\Post;
 use App\Models\PostStatus;
+use App\Models\User;
 use Spatie\Permission\Models\Role;
 
 /**
@@ -21,6 +22,15 @@ function getRoleNameById($id)
 {
     $data = Role::find($id);
     return ucwords($data->name);
+}
+
+/**
+ * Get User Name by Id
+ */
+function getUserNameById($id)
+{
+    $data = User::find($id);
+    return $data->name;
 }
 
 /**
@@ -49,4 +59,14 @@ function countPostByCategoryId($categoryIds)
     $data = Post::whereIn('category_id', $categoryIdsArray)->count();
 
     return $data;
+}
+
+/**
+ * Convert HTML to Text
+ */
+function shortTextWithOutHtml($text, $limit = 25)
+{
+    $plainText = strip_tags($text);
+    $limitedText = (strlen($plainText) > $limit) ? substr($plainText, 0, $limit) . "..." : $plainText;
+    return $limitedText;
 }
